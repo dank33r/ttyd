@@ -79,12 +79,13 @@ static const struct option options[] = {{"port", required_argument, NULL, 'p'},
                                         {"max-clients", required_argument, NULL, 'm'},
                                         {"once", no_argument, NULL, 'o'},
                                         {"exit-no-conn", no_argument, NULL, 'q'},
+                                        {"exit-with-program", no_argument, NULL, 'Q'},
                                         {"browser", no_argument, NULL, 'B'},
                                         {"debug", required_argument, NULL, 'd'},
                                         {"version", no_argument, NULL, 'v'},
                                         {"help", no_argument, NULL, 'h'},
                                         {NULL, 0, 0, 0}};
-static const char *opt_string = "p:i:U:c:H:u:g:s:w:I:b:P:f:6aSC:K:A:Wt:T:Om:oqBd:vh";
+static const char *opt_string = "p:i:U:c:H:u:g:s:w:I:b:P:f:6aSC:K:A:Wt:T:Om:oqQBd:vh";
 
 static void print_help() {
   // clang-format off
@@ -111,6 +112,7 @@ static void print_help() {
           "    -m, --max-clients       Maximum clients to support (default: 0, no limit)\n"
           "    -o, --once              Accept only one client and exit on disconnection\n"
           "    -q, --exit-no-conn      Exit on all clients disconnection\n"
+          "    -Q, --exit-with-program Exit when the program exits\n"
           "    -B, --browser           Open terminal with the default system browser\n"
           "    -I, --index             Custom index.html path\n"
           "    -b, --base-path         Expected base path for requests coming from a reverse proxy (eg: /mounted/here, max length: 128)\n"
@@ -155,6 +157,7 @@ static void print_config() {
   if (server->max_clients > 0) lwsl_notice("  max clients: %d\n", server->max_clients);
   if (server->once) lwsl_notice("  once: true\n");
   if (server->exit_no_conn) lwsl_notice("  exit_no_conn: true\n");
+  if (server->exit_with_program) lwsl_notice(" exit_with_program: true\n");
   if (server->index != NULL) lwsl_notice("  custom index.html: %s\n", server->index);
   if (server->cwd != NULL) lwsl_notice("  working directory: %s\n", server->cwd);
   if (!server->writable) lwsl_warn("The --writable option is not set, will start in readonly mode\n");
@@ -374,6 +377,9 @@ int main(int argc, char **argv) {
         break;
       case 'q':
         server->exit_no_conn = true;
+        break;
+      case 'Q':
+        server->exit_with_program = true;
         break;
       case 'B':
         browser = true;

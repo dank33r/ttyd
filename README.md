@@ -82,6 +82,7 @@ OPTIONS:
     -m, --max-clients       Maximum clients to support (default: 0, no limit)
     -o, --once              Accept only one client and exit on disconnection
     -q, --exit-no-conn      Exit on all clients disconnection
+    -Q, --exit-with-program Exit when program exits
     -B, --browser           Open terminal with the default system browser
     -I, --index             Custom index.html path
     -b, --base-path         Expected base path for requests coming from a reverse proxy (eg: /mounted/here, max length: 128)

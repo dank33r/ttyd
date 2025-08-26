@@ -104,6 +104,13 @@ static void process_exit_cb(pty_process *process) {
   ctx->pss->lws_close_status = process->exit_code == 0 ? 1000 : 1006;
   lws_callback_on_writable(ctx->pss->wsi);
 
+  if (server->exit_with_program) {
+    lwsl_notice("exiting due to the --exit-with-program option with code %d.\n", process->exit_code);
+    force_exit = true;
+    lws_cancel_service(context);
+    exit(process->exit_code);
+  }
+
 done:
   pty_ctx_free(ctx);
 }

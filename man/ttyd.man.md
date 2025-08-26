@@ -71,6 +71,9 @@ ttyd 1 "September 2016" ttyd "User Manual"
   -q, --exit-no-conn
       Exit on all clients disconnection
 
+  -Q, --exit-with-program
+      Exit when the program exits
+
   -B, --browser
       Open terminal with the default system browser
 
